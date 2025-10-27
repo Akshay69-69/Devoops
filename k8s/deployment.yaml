@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: train-booking
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: train-booking
+  template:
+    metadata:
+      labels:
+        app: train-booking
+    spec:
+      containers:
+      - name: train-booking
+        image: <DOCKERHUB_USERNAME>/train-booking:latest
+        ports:
+        - containerPort: 5000
