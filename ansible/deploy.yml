@@ -1,0 +1,30 @@
+---
+- name: Deploy Train Booking App locally
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Build Docker image
+      args:
+        chdir: "{{ playbook_dir }}/.."
+      command: docker build -t train-booking:latest .
+
+    - name: Stop existing container if running
+      ignore_errors: yes
+      command: docker stop train-booking
+
+    - name: Remove existing container if present
+      ignore_errors: yes
+      command: docker rm train-booking
+
+    - name: Run new Docker container
+      args:
+        chdir: "{{ playbook_dir }}/.."
+      command: docker run -d -p 5001:5000 --name train-booking train-booking:latest
+
+
+    - name: Verify the running container
+      command: docker ps
+      register: docker_ps
+
+    - debug:
+        var: docker_ps.stdout

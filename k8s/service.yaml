@@ -2,11 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: train-booking-service
+  namespace: train-system
 spec:
-  type: LoadBalancer
   selector:
     app: train-booking
+  type: NodePort
   ports:
-    - protocol: TCP
-      port: 80
+    - port: 5000
       targetPort: 5000
+      nodePort: 30002
